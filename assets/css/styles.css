@@ -183,7 +183,7 @@
     height: 30px; /* Adjust size as needed */
     line-height: 30px; /* Align + in the center */
     border-radius: 50%;
-    background-color: var(--darker-blue); /* Adjust color as needed */
+    background-color: var(--darker-blue) !important;
     color: #fff; /* Adjust text color as needed */
     font-size: 20px; /* Adjust size as needed */
     font-weight: bold;

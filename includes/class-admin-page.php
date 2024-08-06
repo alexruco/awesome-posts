@@ -1,5 +1,6 @@
 <?php
-#class-admin-page.php
+
+#includes/class-admin-page.php
 
 function awesome_posts_settings_page() {
     if (isset($_POST['awesome_posts_save_settings'])) {
@@ -14,26 +15,33 @@ function awesome_posts_settings_page() {
         $selected_post_types = !empty($_POST['awesome_posts_post_types']) ? array_map('sanitize_text_field', $_POST['awesome_posts_post_types']) : [];
         update_option('awesome_posts_selected_post_types', $selected_post_types);
 
+        $selected_cpt_categories = !empty($_POST['awesome_posts_cpt_categories']) ? array_map('sanitize_text_field', $_POST['awesome_posts_cpt_categories']) : [];
+        update_option('awesome_posts_selected_cpt_categories', $selected_cpt_categories);
+
         echo '<div class="updated"><p>Settings saved.</p></div>';
     }
 
     $selected_post_categories = get_option('awesome_posts_selected_post_categories', []);
     $selected_page_categories = get_option('awesome_posts_selected_page_categories', []);
     $selected_post_types = get_option('awesome_posts_selected_post_types', []);
+    $selected_cpt_categories = get_option('awesome_posts_selected_cpt_categories', []);
+
     $categories = get_categories();
     $post_types = get_post_types(['public' => true], 'objects');
 
+    $taxonomies = get_taxonomies(['public' => true, '_builtin' => false], 'objects');
     ?>
+
     <div class="wrap">
         <h1>Awesome Posts Plugin</h1>
         <p>This plugin fetches and displays posts and pages of selected categories in a four-column layout.</p>
         <hr>
-		<h2>Usage</h2>
+        <h2>Usage</h2>
         <p>Use the shortcode <code>[display_posts]</code> to display the posts and pages.</p>
         <hr>
-		<h2>Select the taxonomy of the posts to be shown:</h2>
-		<br>
-		
+        <h2>Select the taxonomy of the posts to be shown:</h2>
+        <br>
+
         <form method="post" action="">
             <?php wp_nonce_field('awesome_posts_save_settings_verify'); ?>
             <h3>Select Categories for Posts</h3>
@@ -69,6 +77,22 @@ function awesome_posts_settings_page() {
                     </li>
                 <?php endforeach; ?>
             </ul>
+            <h3>Select Categories for Custom Post Types</h3>
+            <?php foreach ($taxonomies as $taxonomy): ?>
+                <h4><?php echo esc_html($taxonomy->label); ?></h4>
+                <ul>
+                    <?php
+                    $terms = get_terms(['taxonomy' => $taxonomy->name, 'hide_empty' => false]);
+                    foreach ($terms as $term): ?>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="awesome_posts_cpt_categories[]" value="<?php echo esc_attr($term->slug); ?>" <?php echo in_array($term->slug, $selected_cpt_categories) ? 'checked' : ''; ?>>
+                                <?php echo esc_html($term->name); ?>
+                            </label>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endforeach; ?>
             <p><input type="submit" name="awesome_posts_save_settings" value="Save Settings" class="button button-primary"></p>
         </form>
     </div>
