@@ -25,7 +25,10 @@ if (!empty($posts)): ?>
                     </div>
                     <div class="cta">
                         <a href="<?php echo get_permalink($post); ?>">
-                        <span class="plus-character">+</span>                        </a>
+                        <span class="plus-character">
+						+
+						</span>                        
+						</a>
                     </div>
                 </div>
             </div>
