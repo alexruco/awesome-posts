@@ -17,14 +17,15 @@ if (!empty($posts)): ?>
                     </div>
                 <?php endif; ?>
                 <div class="content">
-                    <p class="publish-date"><?php echo get_the_date('', $post); ?></p>
-                    <h2 class="title"><?php echo get_the_title($post); ?></h2>
-                    <hr>
-                    <div class="excerpt"><?php echo get_the_excerpt($post); ?></div>
+                    <div class="main-content">    
+                        <p class="publish-date"><?php echo get_the_date('', $post); ?></p>
+                        <h2 class="title"><?php echo get_the_title($post); ?></h2>
+                        <hr>
+                        <div class="excerpt"><?php echo get_the_excerpt($post); ?></div>
+                    </div>
                     <div class="cta">
                         <a href="<?php echo get_permalink($post); ?>">
-                            <span class="dashicons dashicons-plus-alt plus-dashicon"></span>
-                        </a>
+                        <span class="plus-character">+</span>                        </a>
                     </div>
                 </div>
             </div>
